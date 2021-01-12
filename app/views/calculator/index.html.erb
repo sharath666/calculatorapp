@@ -1,0 +1,78 @@
+<h1>Calculator#index</h1>
+<p>Find me in app/views/calculator/index.html.erb</p>
+
+<label> num1 </label>
+<%= text_field_tag :num1%>
+
+<label> num2 </label>
+
+<%= text_field_tag :num2%>
+
+<br />
+
+<div class="form_row">
+
+<br />
+    <label for="theme">operator:</label>
+    <br><%= radio_button_tag 'theme', 'add' %> add
+    <br><%= radio_button_tag 'theme', 'minus' %> Minus
+    <br><%= radio_button_tag 'theme', 'multiple' %> Multiple
+    <br><%= radio_button_tag 'theme', 'divide' %> Divide
+   
+</div>
+
+
+<%= button_tag "submit", id: "submit", class: "btn-primary" %>
+
+
+<div id="result">
+</div>
+<script>
+
+
+addHandler = document.getElementById('submit')
+
+addHandler.addEventListener('click', function(){
+
+    let num1 = document.getElementById('num1').value
+
+    let num2 = document.getElementById('num2').value
+   
+    let addHandler = document.getElementById('theme_add').checked
+    let minusHandler = document.getElementById('theme_minus').checked
+    let multipleHandler = document.getElementById('theme_multiple').checked
+    let divisionHandler = document.getElementById('theme_divide').checked
+    let operator;
+
+    if (addHandler){
+    operator = document.getElementById('theme_add').value
+    }
+else if (minusHandler){
+    operator = document.getElementById('theme_minus').value
+
+} 
+else if (multipleHandler){
+    operator = document.getElementById('theme_multiple').value
+
+} 
+
+else{
+    operator = document.getElementById('theme_divide').value
+ 
+}
+Rails.ajax({
+    url: '/performance?operator='+operator+ '&num1='+num1 + '&num2='+num2,
+    type: "get",
+    dataType: 'json',    
+    success: function(data){
+      
+    document.getElementById('result').innerHTML = data
+    },
+    error: function(){
+         alert('Retry once again');
+     }
+   })
+
+})
+
+</script>
